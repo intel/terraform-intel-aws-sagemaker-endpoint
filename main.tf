@@ -1,5 +1,9 @@
+resource "random_id" "rid" {
+  byte_length = 5
+}
+
 resource "aws_sagemaker_endpoint_configuration" "ec" {
-  name = "my-endpoint-config"
+  name = "my-endpoint-config-${random_id.rid.dec}"
 
   production_variants {
     variant_name           = "variant-1"
@@ -8,7 +12,5 @@ resource "aws_sagemaker_endpoint_configuration" "ec" {
     instance_type          = var.instance_type
   }
 
-  tags = {
-    Name = "department1_recommendation"
-  }
+  tags = var.tags
 }

@@ -11,6 +11,15 @@
 ## Module name
 
 ## Usage
+####Reference Links:
+<b>Using the SageMaker Python SDK </b>
+https://sagemaker.readthedocs.io/en/stable/overview.html#use-sagemaker-jumpstart-algorithms-with-pretrained-models
+
+<b>Deploy a  Pre-Trained Model Directly to a SageMaker Endpoint</b>
+https://sagemaker.readthedocs.io/en/stable/overview.html#use-built-in-algorithms-with-pre-trained-models-in-sagemaker-python-sdk
+
+<b>Built-in Algorithms with pre-trained Model Table</b>
+https://sagemaker.readthedocs.io/en/stable/doc_utils/pretrainedmodels.html
 
 See examples folder for code ./examples/intel-optimized-postgresql-server/main.tf
 

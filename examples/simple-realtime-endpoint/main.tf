@@ -1,5 +1,45 @@
+#########################################################
+# Local variables, modify for your needs                #
+#########################################################
+
+# See policies.md for recommended instances
+# Intel recommended instance types for SageMaker endpoint configurations
+
+# Compute Optimized
+# ml.c6i.large, ml.c6i.xlarge, ml.c6i.2xlarge, ml.c6i.4xlarge, ml.c6i.8xlarge, ml.c6i.12xlarge, ml.c6i.16xlarge, 
+# ml.c6i.24xlarge, ml.c6i.32xlarge,, ml.c5.large, ml.c5.xlarge, ml.c5.2xlarge, ml.c5.4xlarge, ml.c5.9xlarge, ml.c5.18xlarge, ml.c5d.large, ml.c5d.xlarge, ml.c5d.2xlarge, ml.c5d.4xlarge, ml.c5d.9xlarge, ml.c5d.18xlarge
+
+# General Purpose
+# ml.m5.large, ml.m5.xlarge, ml.m5.2xlarge, ml.m5.4xlarge, ml.m5.12xlarge, ml.m5.24xlarge, ml.m5d.large, ml.m5d.xlarge, 
+# ml.m5d.2xlarge,ml.m5d.4xlarge,, ml.m5d.12xlarge, ml.m5d.24xlarge
+
+# Memory Optimized
+# ml.r5.large, ml.r5.xlarge, ml.r5.2xlarge, ml.r5.4xlarge, ml.r5.12xlarge, ml.r5.24xlarge, ml.r5d.large, ml.r5d.xlarge, 
+# ml.r5d.2xlarge, ml.r5d.4xlarge, ml.r5d.12xlarge, ml.r5d.24xlarge
+
+# Accelerated Computing
+# ml.g4dn.xlarge, ml.g4dn.2xlarge, ml.g4dn.4xlarge, ml.g4dn.8xlarge, ml.g4dn.12xlarge, ml.g4dn.16xlarge, ml.inf1.xlarge, 
+# ml.inf1.2xlarge, ml.inf1.6xlarge, ml.inf1.24xlarge
+
+locals {
+  region                                  = "us-east-1"
+  instance_type                           = "ml.c6i.xlarge"
+  sagemaker_container_log_level           = "20"
+  sagemaker_program                       = "inference.py"
+  sagemaker_submit_directory              = "/opt/ml/model/code"
+  aws-jumpstart-inference-script-uri      = "s3://jumpstart-cache-prod-us-east-1/source-directory-tarballs/sklearn/inference/regression/v1.1.0/sourcedir.tar.gz"
+  aws-jumpstart-inference-model-uri-model = "s3://sagemaker-us-east-1-499974397304/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
+  aws-jumpstart-inference-model-uri       = "s3://jumpstart-cache-prod-us-east-1/sklearn-infer/infer-sklearn-regression-linear.tar.gz"
+  model_image                             = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
+  enable_network_isolation                = true
+}
+
+resource "random_id" "rid" {
+  byte_length = 5
+}
+
 resource "aws_sagemaker_endpoint" "endpoint" {
-  name                 = "my-endpoint"
+  name                 = "my-endpoint-1-${random_id.rid.dec}"
   endpoint_config_name = module.simple_realtime_endpoint.name
 
   tags = {
@@ -8,21 +48,42 @@ resource "aws_sagemaker_endpoint" "endpoint" {
 }
 
 module "simple_realtime_endpoint" {
-  source         = "../../"
-  model_name = aws_sagemaker_model.example.name
-}
+  source        = "../../"
+  model_name    = aws_sagemaker_model.example.name
+  instance_type = local.instance_type
 
-resource "aws_sagemaker_model" "example" {
-  name               = "my-model"
-  execution_role_arn = aws_iam_role.example.arn
-
-  primary_container {
-    image = data.aws_sagemaker_prebuilt_ecr_image.test.registry_path
+  tags = {
+    aws-jumpstart-inference-script-uri = local.aws-jumpstart-inference-script-uri
+    aws-jumpstart-inference-model-uri  = local.aws-jumpstart-inference-model-uri
   }
 }
 
+resource "aws_sagemaker_model" "example" {
+  name                     = "my-model-${random_id.rid.dec}"
+  execution_role_arn       = aws_iam_role.example.arn
+  enable_network_isolation = local.enable_network_isolation
+
+  primary_container {
+    image          = local.model_image
+    model_data_url = local.aws-jumpstart-inference-model-uri-model
+    environment = {
+      "SAGEMAKER_CONTAINER_LOG_LEVEL" = local.sagemaker_container_log_level
+      "SAGEMAKER_PROGRAM"             = local.sagemaker_program
+      "SAGEMAKER_REGION"              = local.region
+      "SAGEMAKER_SUBMIT_DIRECTORY"    = local.sagemaker_submit_directory
+    }
+  }
+
+  tags = {
+    aws-jumpstart-inference-script-uri = local.aws-jumpstart-inference-script-uri
+    aws-jumpstart-inference-model-uri  = local.aws-jumpstart-inference-model-uri
+  }
+
+}
+
 resource "aws_iam_role" "example" {
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  assume_role_policy  = data.aws_iam_policy_document.assume_role.json
+  managed_policy_arns = [aws_iam_policy.s3_read_policy.arn]
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -36,6 +97,17 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-data "aws_sagemaker_prebuilt_ecr_image" "test" {
-  repository_name = "kmeans"
+resource "aws_iam_policy" "s3_read_policy" {
+  name = "policy-618033-${random_id.rid.dec}"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = ["s3:GetObject"]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
