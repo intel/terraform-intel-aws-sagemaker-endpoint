@@ -22,16 +22,20 @@
 # ml.inf1.2xlarge, ml.inf1.6xlarge, ml.inf1.24xlarge
 
 locals {
-  region                                  = "us-east-1"
-  instance_type                           = "ml.c6i.xlarge"
-  sagemaker_container_log_level           = "20"
-  sagemaker_program                       = "inference.py"
-  sagemaker_submit_directory              = "/opt/ml/model/code"
-  aws-jumpstart-inference-script-uri      = "s3://jumpstart-cache-prod-us-east-1/source-directory-tarballs/sklearn/inference/regression/v1.1.0/sourcedir.tar.gz"
-  aws-jumpstart-inference-model-uri-model = "s3://sagemaker-us-east-1-499974397304/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
-  aws-jumpstart-inference-model-uri       = "s3://jumpstart-cache-prod-us-east-1/sklearn-infer/infer-sklearn-regression-linear.tar.gz"
-  model_image                             = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
-  enable_network_isolation                = true
+  region                        = "us-east-1"
+  instance_type                 = "ml.c6i.xlarge"
+  sagemaker_container_log_level = "20"
+  sagemaker_program             = "inference.py"
+  sagemaker_submit_directory    = "/opt/ml/model/code"
+
+  # This is the place where you need to provide the S3 path to the model artifact. In this example, we are using a model
+  # artifact that is created from SageMaker jumpstart pre-trained model for Scikit Learn Linear regression.
+  # The S3 path for the model artifact will look like the example below.
+  # aws-jumpstart-inference-model-uri = "s3://sagemaker-<AWS_Region>-<AWS_Account_Id>/sagemaker-<ML_Framework_ML_Lib_Timestamp>/model.tar.gz"
+  aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-499974397304/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
+
+  model_image              = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
+  enable_network_isolation = true
 }
 
 resource "random_id" "rid" {
@@ -53,8 +57,7 @@ module "simple_realtime_endpoint" {
   instance_type = local.instance_type
 
   tags = {
-    aws-jumpstart-inference-script-uri = local.aws-jumpstart-inference-script-uri
-    aws-jumpstart-inference-model-uri  = local.aws-jumpstart-inference-model-uri
+    Name = "department1_recommendation"
   }
 }
 
@@ -65,7 +68,7 @@ resource "aws_sagemaker_model" "example" {
 
   primary_container {
     image          = local.model_image
-    model_data_url = local.aws-jumpstart-inference-model-uri-model
+    model_data_url = local.aws-jumpstart-inference-model-uri
     environment = {
       "SAGEMAKER_CONTAINER_LOG_LEVEL" = local.sagemaker_container_log_level
       "SAGEMAKER_PROGRAM"             = local.sagemaker_program
@@ -73,12 +76,6 @@ resource "aws_sagemaker_model" "example" {
       "SAGEMAKER_SUBMIT_DIRECTORY"    = local.sagemaker_submit_directory
     }
   }
-
-  tags = {
-    aws-jumpstart-inference-script-uri = local.aws-jumpstart-inference-script-uri
-    aws-jumpstart-inference-model-uri  = local.aws-jumpstart-inference-model-uri
-  }
-
 }
 
 resource "aws_iam_role" "example" {
