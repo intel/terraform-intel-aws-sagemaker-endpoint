@@ -6,7 +6,7 @@
 
 © Copyright 2022, Intel Corporation
 
-## Provisioned SageMaker Realtime Endpoint
+## Provisioned SageMaker Realtime Endpoint with one production variant
 
 This example creates a provisioned SageMaker realtime endpoint for inference on a ml.c6i.xlarge instance which is based on 3rd gen Xeon scalable processor (called Icelake). The endpoint implements a Scikit Learn linear regression model hosted on a S3 bucket. The docker container image for the inference logic is hosted on the Elastic COntainer Registry (ECR) within AWS
 
