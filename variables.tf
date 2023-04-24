@@ -83,6 +83,18 @@ variable "json_content_types" {
   default     = null
 }
 
+#Defining shadow production variants section
+variable "create_shadow_variant" {
+  type        = bool
+  description = "A boolean flag to determinie whether a shadow production variant will be created or not."
+  default     = false
+}
+
+variable "shadow_production_variants" {
+  description = "Array of ProductionVariant objects. There is one for each model that you want to host at this endpoint in shadow mode with production traffic replicated from the model specified on ProductionVariants.If you use this field, you can only specify one variant for ProductionVariants and one variant for ShadowProductionVariants."
+  default     = {}
+}
+
 # Defining tags for the endpoint configuration resource
 variable "tags" {
   type        = map(string)

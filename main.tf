@@ -22,6 +22,19 @@ resource "aws_sagemaker_endpoint_configuration" "ec" {
     }
   }
 
+  # Define Shadow Production variants here. Identifies a model that you want to host and the resources chosen to deploy
+  # for hosting it.
+  /* count = var.create_shadow_variant ? 1 : 0
+    shadow_production_variants {
+      model_name             = lookup(shadow_production_variants.value, "model_name", var.model_name)
+      instance_type          = lookup(shadow_production_variants.value, "instance_type", var.instance_type)
+      initial_instance_count = lookup(shadow_production_variants.value, "initial_instance_count", var.initial_instance_count)
+
+      variant_name           = lookup(shadow_production_variants.value, "variant_name", var.variant_name)
+      accelerator_type       = lookup(shadow_production_variants.value, "accelerator_type", var.accelerator_type)
+      initial_variant_weight = lookup(shadow_production_variants.value, "initial_variant_weight", var.initial_variant_weight)
+  } */
+
   # Define the encryption key here. Encrypt your response output in S3. Choose an existing KMS key or enter a 
   # key's ARN.
   kms_key_arn = var.kms_key_arn
