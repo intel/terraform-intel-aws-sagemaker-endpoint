@@ -59,6 +59,7 @@ module "simple_realtime_endpoint_config" {
   source                = "../../"
   create_shadow_variant = local.create_shadow_variant
   model_name            = aws_sagemaker_model.example.name
+  shadow_model_name     = aws_sagemaker_model.example.name
 
   endpoint_production_variants = [{
     instance_type          = local.instance_type
@@ -66,12 +67,11 @@ module "simple_realtime_endpoint_config" {
     variant_name           = "production-variant-1-${random_id.rid.dec}"
   }]
 
-  shadow_production_variants = {
-    model_name             = aws_sagemaker_model.example.name
+  endpoint_shadow_variants = [{
     instance_type          = local.instance_type_shadow
     initial_instance_count = local.initial_instance_count
     variant_name           = "shadow-production-variant-1-${random_id.rid.dec}"
-  }
+  }]
 
   tags = {
     Name = "department1_recommendation"

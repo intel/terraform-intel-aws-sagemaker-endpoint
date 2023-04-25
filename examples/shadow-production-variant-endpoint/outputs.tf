@@ -8,7 +8,6 @@ output "endpoint-arn" {
   value       = aws_sagemaker_endpoint.endpoint.arn
 }
 
-
 output "endpoint-configuration-arn" {
   description = "The Amazon Resource Name (ARN) assigned by AWS to this endpoint configuration"
   value       = module.simple_realtime_endpoint_config

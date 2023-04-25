@@ -15,6 +15,7 @@ variable "instance_type" {
 variable "model_name" {
   type        = string
   description = "The name of the model to use."
+  default     = null
 }
 
 variable "endpoint_production_variants" {
@@ -90,9 +91,45 @@ variable "create_shadow_variant" {
   default     = false
 }
 
-variable "shadow_production_variants" {
+variable "endpoint_shadow_variants" {
   description = "Array of ProductionVariant objects. There is one for each model that you want to host at this endpoint in shadow mode with production traffic replicated from the model specified on ProductionVariants.If you use this field, you can only specify one variant for ProductionVariants and one variant for ShadowProductionVariants."
-  default     = {}
+  default     = []
+}
+
+variable "shadow_instance_type" {
+  type        = string
+  description = "The type of instance to start."
+  default     = "ml.c6i.large"
+}
+
+variable "shadow_model_name" {
+  type        = string
+  description = "The name of the model to use."
+  default     = null
+}
+
+variable "shadow_initial_instance_count" {
+  type        = number
+  description = "Initial number of instances used for auto-scaling."
+  default     = 1
+}
+
+variable "shadow_variant_name" {
+  type        = string
+  description = "The name of the variant. If omitted, Terraform will assign a random, unique name."
+  default     = null
+}
+
+variable "shadow_accelerator_type" {
+  type        = string
+  description = "The size of the Elastic Inference (EI) instance to use for the production variant."
+  default     = null
+}
+
+variable "shadow_initial_variant_weight" {
+  type        = string
+  description = "Determines initial traffic distribution among all of the models that you specify in the endpoint configuration. If unspecified, it defaults to 1.0."
+  default     = null
 }
 
 # Defining tags for the endpoint configuration resource
