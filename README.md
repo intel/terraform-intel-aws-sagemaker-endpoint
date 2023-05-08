@@ -43,8 +43,6 @@ Example of main.tf
 
 locals {
   region                        = "us-east-1"
-  instance_type                 = "ml.c6i.xlarge"
-  initial_instance_count        = 1
   sagemaker_container_log_level = "20"
   sagemaker_program             = "inference.py"
   sagemaker_submit_directory    = "/opt/ml/model/code"
@@ -52,11 +50,12 @@ locals {
   # This is the place where you need to provide the S3 path to the model artifact. In this example, we are using a model
   # artifact that is created from SageMaker jumpstart pre-trained model for Scikit Learn Linear regression.
   # The S3 path for the model artifact will look like the example below.
-  # aws-jumpstart-inference-model-uri = "s3://sagemaker-<AWS_Region>-<AWS_Account_Id>/sagemaker-<ML_Framework_ML_Lib_Timestamp>/model.tar.gz"
+  # aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-<AWS_Account_Id>/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
   aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-499974397304/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
 
   # This is the ECR registry path for the container image that is used for inferencing.
   model_image              = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
+  
   enable_network_isolation = true
 }
 
@@ -66,20 +65,20 @@ resource "random_id" "rid" {
 
 resource "aws_sagemaker_endpoint" "endpoint" {
   name                 = "my-endpoint-1-${random_id.rid.dec}"
-  endpoint_config_name = module.simple_realtime_endpoint.name
+  endpoint_config_name = module.simple_realtime_endpoint_config.endpoint-configuration-name
 
   tags = {
     Name = "department1_recommendation"
   }
 }
 
-module "simple_realtime_endpoint" {
+module "simple_realtime_endpoint_config" {
   source     = "../../"
   model_name = aws_sagemaker_model.example.name
 
   endpoint_production_variants = [{
-    instance_type          = local.instance_type
-    initial_instance_count = local.initial_instance_count
+    instance_type          = "ml.c6i.xlarge"
+    initial_instance_count = 1
     variant_name           = "my-variant-1-${random_id.rid.dec}"
   }]
 

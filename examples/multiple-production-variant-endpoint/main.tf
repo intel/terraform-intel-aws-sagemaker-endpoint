@@ -23,8 +23,6 @@
 
 locals {
   region                         = "us-east-1"
-  instance_type                  = "ml.c6i.xlarge"
-  initial_instance_count         = 1
   sagemaker_container_log_level  = "20"
   sagemaker_program              = "inference.py"
   sagemaker_submit_directory     = "/opt/ml/model/code"
@@ -32,7 +30,6 @@ locals {
   sagemaker_env                  = 1
   sagemaker_model_server_timeout = 3600
   sagemaker_model_server_workers = 1
-  initial_variant_weight         = 0.5
 
   # This is the place where you need to provide the S3 path to the Scikit Learn model artifact. This is using a model
   # artifact that is created from SageMaker jumpstart pre-trained model for Scikit Learn Linear regression.
@@ -49,6 +46,7 @@ locals {
   # This is the ECR registry path for the container image that is used for inferencing.
   model_image_scikit_learn = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
   model_image_xgboost      = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-xgboost:1.3-1"
+
   enable_network_isolation = true
 }
 
@@ -71,17 +69,17 @@ module "simple_realtime_endpoint_config" {
 
   endpoint_production_variants = [
     {
-      instance_type          = local.instance_type
-      initial_instance_count = local.initial_instance_count
+      instance_type          = "ml.c6i.xlarge"
+      initial_instance_count = 1
       variant_name           = "production-variant-1-${random_id.rid.dec}"
-      initial_variant_weight = local.initial_variant_weight
+      initial_variant_weight = 0.5
     },
     {
       model_name             = aws_sagemaker_model.xgboost.name
-      instance_type          = local.instance_type
-      initial_instance_count = local.initial_instance_count
+      instance_type          = "ml.c6i.xlarge"
+      initial_instance_count = 1
       variant_name           = "production-variant-2-${random_id.rid.dec}"
-      initial_variant_weight = local.initial_variant_weight
+      initial_variant_weight = 0.5
     }
   ]
 
