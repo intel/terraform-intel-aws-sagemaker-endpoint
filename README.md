@@ -8,12 +8,12 @@
 
 © Copyright 2022, Intel Corporation
 
-## Amazon SageMaker Endpoint Configuration module
-This module provides functionality to create a SageMaker Endpoint Configuration based on the latest 3rd gen Intel Xeon scalable processors (called Icelake) that is available in SageMaker endpoints at the time of publication of this module.
+## Amazon SageMaker Endpoint module
+This module provides functionality to create a SageMaker Endpoint based on the latest 3rd gen Intel Xeon scalable processors (called Icelake) that is available in SageMaker endpoints at the time of publication of this module.
 
 ## Usage
 
-See examples folder for code ./examples/terraform-intel-aws-sagemaker-endpoint/main.tf
+See examples folder for code ./examples/provisioned-realtime-endpoint/main.tf
 
 Example of main.tf
 
@@ -54,8 +54,8 @@ locals {
   aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-499974397304/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
 
   # This is the ECR registry path for the container image that is used for inferencing.
-  model_image              = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
-  
+  model_image = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
+
   enable_network_isolation = true
 }
 
@@ -63,36 +63,11 @@ resource "random_id" "rid" {
   byte_length = 5
 }
 
-resource "aws_sagemaker_endpoint" "endpoint" {
-  name                 = "my-endpoint-1-${random_id.rid.dec}"
-  endpoint_config_name = module.simple_realtime_endpoint_config.endpoint-configuration-name
+module "sagemaker_scikit_learn_model" {
+  source = "../../modules"
 
-  tags = {
-    Name = "department1_recommendation"
-  }
-}
-
-module "simple_realtime_endpoint_config" {
-  source     = "../../"
-  model_name = aws_sagemaker_model.example.name
-
-  endpoint_production_variants = [{
-    instance_type          = "ml.c6i.xlarge"
-    initial_instance_count = 1
-    variant_name           = "my-variant-1-${random_id.rid.dec}"
-  }]
-
-  tags = {
-    Name = "department1_recommendation"
-  }
-}
-
-resource "aws_sagemaker_model" "example" {
-  name                     = "my-model-${random_id.rid.dec}"
-  execution_role_arn       = aws_iam_role.example.arn
-  enable_network_isolation = local.enable_network_isolation
-
-  primary_container {
+  # Specifying SageMaker Model Primary container parameters corresponding to the production variant
+  sagemaker_model_primary_container = [{
     image          = local.model_image
     model_data_url = local.aws-jumpstart-inference-model-uri
     environment = {
@@ -101,38 +76,19 @@ resource "aws_sagemaker_model" "example" {
       "SAGEMAKER_REGION"              = local.region
       "SAGEMAKER_SUBMIT_DIRECTORY"    = local.sagemaker_submit_directory
     }
-  }
+  }]
 }
 
-resource "aws_iam_role" "example" {
-  assume_role_policy  = data.aws_iam_policy_document.assume_role.json
-  managed_policy_arns = [aws_iam_policy.s3_read_policy.arn]
-}
+module "sagemaker_endpoint" {
+  source = "../../"
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["sagemaker.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_policy" "s3_read_policy" {
-  name = "policy-618033-${random_id.rid.dec}"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["s3:GetObject"]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+  # Specifying one production variant for the SageMaker endpoint configuration
+  endpoint_production_variants = [{
+    model_name             = module.sagemaker_scikit_learn_model.sagemaker-model-name
+    instance_type          = "ml.c6i.xlarge"
+    initial_instance_count = 1
+    variant_name           = "my-variant-1-${random_id.rid.dec}"
+  }]
 }
 ```
 
@@ -148,7 +104,7 @@ terraform apply
 Note that this example may create resources. Run `terraform destroy` when you don't need these resources anymore.
 
 ## Considerations  
-- The Sagemaker Endpoint Configuration resource created is a provisoned endpoint
+- The Sagemaker Endpoint resource created is a provisoned endpoint
 
 ## AWS References
 <b>Using the SageMaker Python SDK </b>
