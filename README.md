@@ -140,6 +140,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_sagemaker_endpoint.endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_endpoint) | resource |
 | [aws_sagemaker_endpoint_configuration.ec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_endpoint_configuration) | resource |
 | [random_id.rid](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
@@ -152,12 +153,16 @@ No modules.
 | <a name="input_create_shadow_variant"></a> [create\_shadow\_variant](#input\_create\_shadow\_variant) | A boolean flag to determinie whether a shadow production variant will be created or not. | `bool` | `false` | no |
 | <a name="input_destination_s3_uri"></a> [destination\_s3\_uri](#input\_destination\_s3\_uri) | The URL for S3 location where the captured data is stored. | `any` | `null` | no |
 | <a name="input_enable_capture"></a> [enable\_capture](#input\_enable\_capture) | Flag to enable data capture. | `bool` | `false` | no |
+| <a name="input_enable_intel_tags"></a> [enable\_intel\_tags](#input\_enable\_intel\_tags) | If true adds additional Intel tags to resources | `bool` | `true` | no |
+| <a name="input_endpoint_configuration_tags"></a> [endpoint\_configuration\_tags](#input\_endpoint\_configuration\_tags) | Tags for the SageMaker Endpoint Configuration resource | `map(string)` | `null` | no |
 | <a name="input_endpoint_production_variants"></a> [endpoint\_production\_variants](#input\_endpoint\_production\_variants) | A list of Production Variant objects, one for each model that you want to host at this endpoint. | `list` | `[]` | no |
 | <a name="input_endpoint_shadow_variants"></a> [endpoint\_shadow\_variants](#input\_endpoint\_shadow\_variants) | Array of ProductionVariant objects. There is one for each model that you want to host at this endpoint in shadow mode with production traffic replicated from the model specified on ProductionVariants.If you use this field, you can only specify one variant for ProductionVariants and one variant for ShadowProductionVariants. | `list` | `[]` | no |
+| <a name="input_endpoint_tags"></a> [endpoint\_tags](#input\_endpoint\_tags) | Tags for the SageMaker Endpoint resource | `map(string)` | `null` | no |
 | <a name="input_initial_instance_count"></a> [initial\_instance\_count](#input\_initial\_instance\_count) | Initial number of instances used for auto-scaling. | `number` | `1` | no |
 | <a name="input_initial_sampling_percentage"></a> [initial\_sampling\_percentage](#input\_initial\_sampling\_percentage) | Portion of data to capture. Should be between 0 and 100. | `number` | `100` | no |
 | <a name="input_initial_variant_weight"></a> [initial\_variant\_weight](#input\_initial\_variant\_weight) | Determines initial traffic distribution among all of the models that you specify in the endpoint configuration. If unspecified, it defaults to 1.0. | `string` | `null` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The type of instance to start. | `string` | `"ml.c6i.large"` | no |
+| <a name="input_intel_tags"></a> [intel\_tags](#input\_intel\_tags) | Intel Tags | `map(string)` | <pre>{<br>  "intel-module": "terraform-intel-aws-sagemaker-endpoint",<br>  "intel-registry": "https://registry.terraform.io/namespaces/intel"<br>}</pre> | no |
 | <a name="input_json_content_types"></a> [json\_content\_types](#input\_json\_content\_types) | The JSON content type headers to capture. | `any` | `null` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | Amazon Resource Name (ARN) of a AWS Key Management Service key that Amazon SageMaker uses to encrypt data on the storage volume attached to the ML compute instance that hosts the endpoint. | `string` | `null` | no |
 | <a name="input_model_name"></a> [model\_name](#input\_model\_name) | The name of the model to use. | `string` | `null` | no |
@@ -167,14 +172,15 @@ No modules.
 | <a name="input_shadow_instance_type"></a> [shadow\_instance\_type](#input\_shadow\_instance\_type) | The type of instance to start. | `string` | `"ml.c6i.large"` | no |
 | <a name="input_shadow_model_name"></a> [shadow\_model\_name](#input\_shadow\_model\_name) | The name of the model to use. | `string` | `null` | no |
 | <a name="input_shadow_variant_name"></a> [shadow\_variant\_name](#input\_shadow\_variant\_name) | The name of the variant. If omitted, Terraform will assign a random, unique name. | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags for the SageMaker Endpoint Configuration resource | `map(string)` | n/a | yes |
 | <a name="input_variant_name"></a> [variant\_name](#input\_variant\_name) | The name of the variant. If omitted, Terraform will assign a random, unique name. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| <a name="output_endpoint-arn"></a> [endpoint-arn](#output\_endpoint-arn) | The Amazon Resource Name (ARN) assigned by AWS to this endpoint |
 | <a name="output_endpoint-configuration-arn"></a> [endpoint-configuration-arn](#output\_endpoint-configuration-arn) | The Amazon Resource Name (ARN) assigned by AWS to this endpoint configuration |
 | <a name="output_endpoint-configuration-name"></a> [endpoint-configuration-name](#output\_endpoint-configuration-name) | The name of the endpoint configuration. |
 | <a name="output_endpoint-configuration-tags_all"></a> [endpoint-configuration-tags\_all](#output\_endpoint-configuration-tags\_all) | A map of tags assigned to the endpoint configuration, including those inherited from the provider default\_tags configuration block. |
+| <a name="output_endpoint-name"></a> [endpoint-name](#output\_endpoint-name) | The name of the endpoint |
 <!-- END_TF_DOCS -->
