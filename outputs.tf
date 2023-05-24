@@ -1,3 +1,19 @@
+#---------------------------------------------------
+# AWS Sagemaker endpoint
+#---------------------------------------------------
+output "endpoint-arn" {
+  description = "The Amazon Resource Name (ARN) assigned by AWS to this endpoint"
+  value       = aws_sagemaker_endpoint.endpoint.arn
+}
+
+output "endpoint-name" {
+  description = "The name of the endpoint"
+  value       = aws_sagemaker_endpoint.endpoint.name
+}
+
+#---------------------------------------------------
+# AWS Sagemaker endpoint configuration
+#---------------------------------------------------
 output "endpoint-configuration-arn" {
   description = "The Amazon Resource Name (ARN) assigned by AWS to this endpoint configuration"
   value       = aws_sagemaker_endpoint_configuration.ec.arn

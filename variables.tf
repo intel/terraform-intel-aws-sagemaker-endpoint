@@ -8,6 +8,22 @@ variable "instance_type" {
   default     = "ml.c6i.large"
 }
 
+# Variables for Intel tags
+variable "enable_intel_tags" {
+  type        = bool
+  default     = true
+  description = "If true adds additional Intel tags to resources"
+}
+
+variable "intel_tags" {
+  default = {
+    intel-registry = "https://registry.terraform.io/namespaces/intel"
+    intel-module   = "terraform-intel-aws-sagemaker-endpoint"
+  }
+  type        = map(string)
+  description = "Intel Tags"
+}
+
 ########################
 ####    Required    ####
 ########################
@@ -132,8 +148,15 @@ variable "shadow_initial_variant_weight" {
   default     = null
 }
 
-# Defining tags for the endpoint configuration resource
-variable "tags" {
+# Defining tags for the endpoint configuration resource and endpoint resource
+variable "endpoint_configuration_tags" {
   type        = map(string)
   description = "Tags for the SageMaker Endpoint Configuration resource"
+  default     = null
+}
+
+variable "endpoint_tags" {
+  type        = map(string)
+  description = "Tags for the SageMaker Endpoint resource"
+  default     = null
 }

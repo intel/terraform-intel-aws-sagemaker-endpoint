@@ -23,8 +23,6 @@
 
 locals {
   region                         = "us-east-1"
-  instance_type                  = "ml.c6i.xlarge"
-  initial_instance_count         = 1
   sagemaker_container_log_level  = "20"
   sagemaker_program              = "inference.py"
   sagemaker_submit_directory     = "/opt/ml/model/code"
@@ -32,7 +30,6 @@ locals {
   sagemaker_env                  = 1
   sagemaker_model_server_timeout = 3600
   sagemaker_model_server_workers = 1
-  initial_variant_weight         = 0.5
 
   # This is the place where you need to provide the S3 path to the Scikit Learn model artifact. This is using a model
   # artifact that is created from SageMaker jumpstart pre-trained model for Scikit Learn Linear regression.
@@ -49,6 +46,7 @@ locals {
   # This is the ECR registry path for the container image that is used for inferencing.
   model_image_scikit_learn = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
   model_image_xgboost      = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-xgboost:1.3-1"
+
   enable_network_isolation = true
 }
 
@@ -56,105 +54,63 @@ resource "random_id" "rid" {
   byte_length = 5
 }
 
-resource "aws_sagemaker_endpoint" "endpoint" {
-  name                 = "my-endpoint-1-${random_id.rid.dec}"
-  endpoint_config_name = module.simple_realtime_endpoint_config.endpoint-configuration-name
+module "sagemaker_scikit_learn_model" {
+  source = "../../modules"
 
-  tags = {
-    Name = "department1_recommendation"
-  }
+  # Specifying SageMaker Model Primary container parameters corresponding to the production variant for Scikit Learn model
+  sagemaker_model_primary_container = [
+    {
+      image          = local.model_image_scikit_learn
+      model_data_url = local.aws-jumpstart-inference-model-uri_scikit_learn
+      environment = {
+        "SAGEMAKER_CONTAINER_LOG_LEVEL" = local.sagemaker_container_log_level
+        "SAGEMAKER_PROGRAM"             = local.sagemaker_program
+        "SAGEMAKER_REGION"              = local.region
+        "SAGEMAKER_SUBMIT_DIRECTORY"    = local.sagemaker_submit_directory
+      }
+  }]
 }
 
-module "simple_realtime_endpoint_config" {
-  source     = "../../"
-  model_name = aws_sagemaker_model.scikit_learn.name
+module "sagemaker_xgboost_model" {
+  source = "../../modules"
 
+  # Specifying SageMaker Model Primary container parameters corresponding to the production variant for XGBoost model
+  sagemaker_model_primary_container = [
+    {
+      image          = local.model_image_xgboost
+      model_data_url = local.aws-jumpstart-inference-model-uri_xgboost
+      environment = {
+        "MODEL_CACHE_ROOT"               = local.model_cache_root
+        "SAGEMAKER_CONTAINER_LOG_LEVEL"  = local.sagemaker_container_log_level
+        "SAGEMAKER_ENV"                  = local.sagemaker_env
+        "SAGEMAKER_MODEL_SERVER_TIMEOUT" = local.sagemaker_model_server_timeout
+        "SAGEMAKER_MODEL_SERVER_WORKERS" = local.sagemaker_model_server_workers
+        "SAGEMAKER_PROGRAM"              = local.sagemaker_program
+        "SAGEMAKER_REGION"               = local.region
+        "SAGEMAKER_SUBMIT_DIRECTORY"     = local.sagemaker_submit_directory
+      }
+  }]
+}
+
+module "sagemaker_endpoint" {
+  source = "../../"
+
+  # Specifying two production variants for the SageMaker endpoint configuration
   endpoint_production_variants = [
     {
-      instance_type          = local.instance_type
-      initial_instance_count = local.initial_instance_count
+      model_name             = module.sagemaker_scikit_learn_model.sagemaker-model-name
+      instance_type          = "ml.c6i.xlarge"
+      initial_instance_count = 1
       variant_name           = "production-variant-1-${random_id.rid.dec}"
-      initial_variant_weight = local.initial_variant_weight
+      initial_variant_weight = 0.5
     },
     {
-      model_name             = aws_sagemaker_model.xgboost.name
-      instance_type          = local.instance_type
-      initial_instance_count = local.initial_instance_count
+      model_name             = module.sagemaker_xgboost_model.sagemaker-model-name
+      instance_type          = "ml.c6i.xlarge"
+      initial_instance_count = 1
       variant_name           = "production-variant-2-${random_id.rid.dec}"
-      initial_variant_weight = local.initial_variant_weight
+      initial_variant_weight = 0.5
     }
   ]
-
-  tags = {
-    Name = "department1_recommendation"
-  }
 }
 
-resource "aws_sagemaker_model" "scikit_learn" {
-  name                     = "scikit-learn-${random_id.rid.dec}"
-  execution_role_arn       = aws_iam_role.example.arn
-  enable_network_isolation = local.enable_network_isolation
-
-  primary_container {
-    image          = local.model_image_scikit_learn
-    model_data_url = local.aws-jumpstart-inference-model-uri_scikit_learn
-    environment = {
-      "SAGEMAKER_CONTAINER_LOG_LEVEL" = local.sagemaker_container_log_level
-      "SAGEMAKER_PROGRAM"             = local.sagemaker_program
-      "SAGEMAKER_REGION"              = local.region
-      "SAGEMAKER_SUBMIT_DIRECTORY"    = local.sagemaker_submit_directory
-    }
-  }
-}
-
-resource "aws_sagemaker_model" "xgboost" {
-  name                     = "xgboost-${random_id.rid.dec}"
-  execution_role_arn       = aws_iam_role.example.arn
-  enable_network_isolation = local.enable_network_isolation
-
-  primary_container {
-    image          = local.model_image_xgboost
-    model_data_url = local.aws-jumpstart-inference-model-uri_xgboost
-    environment = {
-      "MODEL_CACHE_ROOT"               = local.model_cache_root
-      "SAGEMAKER_CONTAINER_LOG_LEVEL"  = local.sagemaker_container_log_level
-      "SAGEMAKER_ENV"                  = local.sagemaker_env
-      "SAGEMAKER_MODEL_SERVER_TIMEOUT" = local.sagemaker_model_server_timeout
-      "SAGEMAKER_MODEL_SERVER_WORKERS" = local.sagemaker_model_server_workers
-      "SAGEMAKER_PROGRAM"              = local.sagemaker_program
-      "SAGEMAKER_REGION"               = local.region
-      "SAGEMAKER_SUBMIT_DIRECTORY"     = local.sagemaker_submit_directory
-    }
-  }
-}
-
-resource "aws_iam_role" "example" {
-  assume_role_policy  = data.aws_iam_policy_document.assume_role.json
-  managed_policy_arns = [aws_iam_policy.s3_read_policy.arn]
-}
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["sagemaker.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_policy" "s3_read_policy" {
-  name = "policy-618033-${random_id.rid.dec}"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["s3:GetObject"]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
-}
