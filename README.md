@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="./images/logo-classicblue-800px.png" alt="Intel Logo" width="250"/>
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/logo-classicblue-800px.png" alt="Intel Logo" width="250"/>
 </p>
 
 # Intel® Cloud Optimization Modules for Terraform
@@ -10,6 +10,76 @@
 
 ## Amazon SageMaker Endpoint module
 This module provides functionality to create a SageMaker Endpoint based on the latest 3rd gen Intel Xeon scalable processors (called Icelake) that is available in SageMaker endpoints at the time of publication of this module.
+
+## Performance Data
+
+
+<left>
+
+#### Find all the information below plus even more by navigating our full library
+#### [INTEL CLOUD PERFROMANCE DATA LIBRARY for AWS](https://www.intel.com/content/www/us/en/developer/topic-technology/cloud/library.html?f:@stm_10381_en=%5BAmazon%20Web%20Services%5D)
+
+#
+
+#### [Achieve up to 64% Better BERT-Large Inference Work Performances by Selecting AWS M6i Instances Featuring 3rd Gen Intel Xeon Scalable Processors](https://www.intel.com/content/www/us/en/content-details/752765/achieve-up-to-64-better-bert-large-inference-work-performances-by-selecting-aws-m6i-instances-featuring-3rd-gen-intel-xeon-scalable-processors.html)
+
+<p align="center">
+  <a href="https://www.intel.com/content/www/us/en/content-details/752765/achieve-up-to-64-better-bert-large-inference-work-performances-by-selecting-aws-m6i-instances-featuring-3rd-gen-intel-xeon-scalable-processors.html">
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/Image01_64vcpu_BERT.jpg?raw=true" alt="Link" width="600"/>
+  </a>
+</p>
+
+#
+
+#### [Amazon M6i Instances Featuring 3rd Gen Intel Xeon Scalable Processors Delivered up to 1.75 Times the Wide & Deep Recommender Performance](https://www.intel.com/content/www/us/en/content-details/752416/amazon-m6i-instances-featuring-3rd-gen-intel-xeon-scalable-processors-delivered-up-to-1-75-times-the-wide-deep-recommender-performance.html)
+
+<p align="center">
+  <a href="https://www.intel.com/content/www/us/en/content-details/752416/amazon-m6i-instances-featuring-3rd-gen-intel-xeon-scalable-processors-delivered-up-to-1-75-times-the-wide-deep-recommender-performance.html">
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/Image02_96vcpu_WIDE_DEEP.jpg?raw=true" alt="Link" width="600"/>
+  </a>
+</p>
+
+#
+
+#### [Handle Up to 2.94x the Frames per Second for ResNet50 Image Classification with AWS M6i Instances Featuring 3rd Gen Intel Xeon Scalable Processors](https://www.intel.com/content/www/us/en/content-details/753022/handle-up-to-2-94x-the-frames-per-second-for-resnet50-image-classification-with-aws-m6i-instances-featuring-3rd-gen-intel-xeon-scalable-processors.html)
+
+<p align="center">
+  <a href="https://www.intel.com/content/www/us/en/content-details/753022/handle-up-to-2-94x-the-frames-per-second-for-resnet50-image-classification-with-aws-m6i-instances-featuring-3rd-gen-intel-xeon-scalable-processors.html">
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/Image03_Resnet50_Image_Classification.jpg?raw=true" alt="Link" width="600"/>
+  </a>
+</p>
+
+#
+
+#### [Classify up to 1.21x the Frames per Second for ResNet50 Workloads by Choosing AWS M6i Instances with 3rd Gen Intel Xeon Scalable Processors](https://www.intel.com/content/www/us/en/content-details/752689/classify-up-to-1-21x-the-frames-per-second-for-resnet50-workloads-by-choosing-aws-m6i-instances-with-3rd-gen-intel-xeon-scalable-processors.html)
+
+<p align="center">
+  <a href="https://www.intel.com/content/www/us/en/content-details/752689/classify-up-to-1-21x-the-frames-per-second-for-resnet50-workloads-by-choosing-aws-m6i-instances-with-3rd-gen-intel-xeon-scalable-processors.html">
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/Image04_Resnet50_FPS.jpg?raw=true" alt="Link" width="600"/>
+  </a>
+</p>
+
+#
+
+#### [Choose AWS M6i Instances with 3rd Gen Intel Xeon Scalable Processors for Better BERT Deep Learning Performance](https://www.intel.com/content/www/us/en/content-details/753290/choose-aws-m6i-instances-with-3rd-gen-intel-xeon-scalable-processors-for-better-bert-deep-learning-performance.html)
+
+<p align="center">
+  <a href="https://www.intel.com/content/www/us/en/content-details/753290/choose-aws-m6i-instances-with-3rd-gen-intel-xeon-scalable-processors-for-better-bert-deep-learning-performance.html">
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/Image05_BERT_BatchSize_1.jpg?raw=true" alt="Link" width="600"/>
+  </a>
+</p>
+
+#
+
+#### [Achieve up to 6.5x the BERT Deep Learning Performance with AWS M6i Instances Enabled by 3rd Gen Intel Xeon Scalable Processors](https://www.intel.com/content/www/us/en/content-details/756228/achieve-up-to-6-5x-the-bert-deep-learning-performance-with-aws-m6i-instances-enabled-by-3rd-gen-intel-xeon-scalable-processors.html)
+
+<p align="center">
+  <a href="https://www.intel.com/content/www/us/en/content-details/756228/achieve-up-to-6-5x-the-bert-deep-learning-performance-with-aws-m6i-instances-enabled-by-3rd-gen-intel-xeon-scalable-processors.html">
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/Image06_BERT_BatchSize_1_GenOverGen.jpg?raw=true" alt="Link" width="600"/>
+  </a>
+</p>
+
+#
 
 ## Usage
 
@@ -50,8 +120,7 @@ locals {
   # This is the place where you need to provide the S3 path to the model artifact. In this example, we are using a model
   # artifact that is created from SageMaker jumpstart pre-trained model for Scikit Learn Linear regression.
   # The S3 path for the model artifact will look like the example below.
-  # aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-<AWS_Account_Id>/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
-  aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-499974397304/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
+  aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-<AWS_Account_Id>/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz" # change here
 
   # This is the ECR registry path for the container image that is used for inferencing.
   model_image = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
@@ -80,7 +149,7 @@ module "sagemaker_scikit_learn_model" {
 }
 
 module "sagemaker_endpoint" {
-  source = "../../"
+  source = "intel/aws-sagemaker-endpoint/intel"
 
   # Specifying one production variant for the SageMaker endpoint configuration
   endpoint_production_variants = [{
