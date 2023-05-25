@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/OTCShare2/terraform-intel-aws-sagemaker-endpoint/blob/main/images/logo-classicblue-800px.png?raw=true" alt="Intel Logo" width="250"/>
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/logo-classicblue-800px.png?raw=true" alt="Intel Logo" width="250"/>
 </p>
 
 # Intel Cloud Optimization Modules for Terraform
@@ -40,14 +40,12 @@ locals {
   # This is the place where you need to provide the S3 path to the Scikit Learn model artifact. This is using a model
   # artifact that is created from SageMaker jumpstart pre-trained model for Scikit Learn Linear regression.
   # The S3 path for the model artifact will look like the example below.
-  # aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east1-<AWS_Account_Id>/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
-  aws-jumpstart-inference-model-uri_scikit_learn = "s3://sagemaker-us-east-1-499974397304/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz"
+  aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east1-<AWS_Account_Id>/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz" # Change here
 
   # This is the place where you need to provide the S3 path to the XGBoost model artifact. This is using a model
   # artifact that is created from SageMaker jumpstart pre-trained model for XGBoost regression.
   # The S3 path for the model artifact will look like the example below.
-  # aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east1-<AWS_Account_Id>/xgboost-regression-model-20230422-003939/model.tar.gz"
-  aws-jumpstart-inference-model-uri_xgboost = "s3://sagemaker-us-east-1-499974397304/xgboost-regression-model-20230422-003939/model.tar.gz"
+  aws-jumpstart-inference-model-uri_xgboost = "s3://sagemaker-us-east1-<AWS_Account_Id>/xgboost-regression-model-20230422-003939/model.tar.gz" # Change here
 
   # This is the ECR registry path for the container image that is used for inferencing.
   model_image_scikit_learn = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
@@ -99,7 +97,7 @@ module "sagemaker_xgboost_model" {
 }
 
 module "sagemaker_endpoint" {
-  source = "../../"
+  source = "intel/aws-sagemaker-endpoint/intel"
 
   # Specifying two production variants for the SageMaker endpoint configuration
   endpoint_production_variants = [
