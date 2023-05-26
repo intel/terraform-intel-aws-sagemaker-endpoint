@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/logo-classicblue-800px.png" alt="Intel Logo" width="250"/>
+  <img src="https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/images/logo-classicblue-800px.png?raw=true" alt="Intel Logo" width="250"/>
 </p>
 
 # Intel® Cloud Optimization Modules for Terraform
@@ -14,7 +14,7 @@ This module provides functionality to create a SageMaker Endpoint based on the l
 ## Performance Data
 
 
-<left>
+<center>
 
 #### Find all the information below plus even more by navigating our full library
 #### [INTEL CLOUD PERFROMANCE DATA LIBRARY for AWS](https://www.intel.com/content/www/us/en/developer/topic-technology/cloud/library.html?f:@stm_10381_en=%5BAmazon%20Web%20Services%5D)
@@ -80,6 +80,7 @@ This module provides functionality to create a SageMaker Endpoint based on the l
 </p>
 
 #
+</center>
 
 ## Usage
 
