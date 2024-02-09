@@ -91,8 +91,7 @@ module "sagemaker_xgboost_model" {
 }
 
 module "sagemaker_endpoint" {
-  #source = "intel/aws-sagemaker-endpoint/intel"
-  source = "../../"
+  source = "intel/aws-sagemaker-endpoint/intel"
 
   # Specifying two production variants for the SageMaker endpoint configuration
   endpoint_production_variants = [
