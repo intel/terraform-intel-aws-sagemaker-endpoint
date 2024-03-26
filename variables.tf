@@ -5,7 +5,7 @@
 variable "instance_type" {
   type        = string
   description = "The type of instance to start."
-  default     = "ml.c6i.large"
+  default     = "ml.c7i.large"
 }
 
 # Variables for Intel tags
