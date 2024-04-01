@@ -21,7 +21,6 @@ This module provides functionality to create a SageMaker Endpoint based on the l
 
 #
 
->>
 #### [Deliver a Better Customer Support Chatbot Experience with Higher-Value AWS EC2 M7i Instances](https://www.intel.com/content/www/us/en/content-details/794277/deliver-a-better-customer-support-chatbot-experience-with-higher-value-aws-ec2-m7i-instances.html)
 
 <p align="center">
@@ -37,7 +36,6 @@ This module provides functionality to create a SageMaker Endpoint based on the l
 </p>
 
 #
->>
 
 #### [Achieve up to 64% Better BERT-Large Inference Work Performances by Selecting AWS M6i Instances Featuring 3rd Gen Intel Xeon Scalable Processors](https://www.intel.com/content/www/us/en/content-details/752765/achieve-up-to-64-better-bert-large-inference-work-performances-by-selecting-aws-m6i-instances-featuring-3rd-gen-intel-xeon-scalable-processors.html)
 
