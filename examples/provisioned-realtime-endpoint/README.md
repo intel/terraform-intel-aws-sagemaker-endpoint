@@ -8,7 +8,7 @@
 
 ## Provisioned SageMaker Realtime Endpoint with one production variant
 
-This example creates a provisioned SageMaker realtime endpoint for inference on a ml.c6i.xlarge instance which is based on 3rd gen Xeon scalable processor (called Icelake). The endpoint implements a Scikit Learn linear regression model hosted on a S3 bucket. The docker container image for the inference logic is hosted on the Elastic Container Registry (ECR) within AWS
+This example creates a provisioned SageMaker realtime endpoint for inference on a ml.c7i.xlarge instance which is based on 4th gen Xeon scalable processor (called Sapphire Rapids). The endpoint implements a Scikit Learn linear regression model hosted on a S3 bucket. The docker container image for the inference logic is hosted on the Elastic Container Registry (ECR) within AWS
 
 ## Usage
 
@@ -30,7 +30,7 @@ locals {
   # This is the place where you need to provide the S3 path to the model artifact. In this example, we are using a model
   # artifact that is created from SageMaker jumpstart pre-trained model for Scikit Learn Linear regression.
   # The S3 path for the model artifact will look like the example below.
-  aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-<AWS_Account_Id>/sagemaker-scikit-learn-2023-04-18-20-47-27-707/model.tar.gz" # change here
+  aws-jumpstart-inference-model-uri = "s3://sagemaker-us-east-1-<AWS_Account_Id>/sklearn-regression-linear-20240208-220732/model.tar.gz" # change here
 
   # This is the ECR registry path for the container image that is used for inferencing.
   model_image = "683313688378.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:0.23-1-cpu-py3"
@@ -64,7 +64,7 @@ module "sagemaker_endpoint" {
   # Specifying one production variant for the SageMaker endpoint configuration
   endpoint_production_variants = [{
     model_name             = module.sagemaker_scikit_learn_model.sagemaker-model-name
-    instance_type          = "ml.c6i.xlarge"
+    instance_type          = "ml.c7i.xlarge"
     initial_instance_count = 1
     variant_name           = "my-variant-1-${random_id.rid.dec}"
   }]
@@ -82,7 +82,7 @@ terraform apply
 ```
 ## Considerations
 - The inference endpoint is created in us-east-1 region within AWS. You can change the region by updating the region within the locals definition in the main.tf file of the example
-- The endpoint is hosted on a ml.c6i.xlarge instance. You can change the instance type by updating the instance_type within the locals definition in the main.tf file of the example
+- The endpoint is hosted on a ml.c7i.xlarge instance. You can change the instance type by updating the instance_type within the locals definition in the main.tf file of the example
 - The initial_instance_count is set to one instance. You can change the initial instance count by updating the initial_instance_count within the locals definition in the main.tf file of the example
 - The model used for inference is hosted on a S3 bucket and defined under a local variable called aws-jumpstart-inference-model-uri. Before running this example, you should change the aws-jumpstart-inference-model-uri to point to the S3 bucket location hosting the model you want to serve at the endpoint
 - The model image containing the inference logic is hosted on the ECR registry and defined under a local variable called model_image. Before running this example, you may need to change the model_image within locals to point to the docker container hosted in your ECR registry
