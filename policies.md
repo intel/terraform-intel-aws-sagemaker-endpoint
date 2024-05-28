@@ -2,35 +2,20 @@
   <img src="./images/logo-classicblue-800px.png" alt="Intel Logo" width="250"/>
 </p>
 
-# Intel® Cloud Optimization Modules for Terraform  
+# Intel® Optimized Cloud Modules for Terraform  
 
-© Copyright 2022, Intel Corporation
+© Copyright 2024, Intel Corporation
 
 ## HashiCorp Sentinel Policies
 
-This file documents the HashiCorp Sentinel policies that apply to this module for SageMaker Endpoint Configuration
+<b>What are Sentinel Policies?</b>
 
-## Policy 1
+HashiCorp Sentinel is a policy as code framework that can be used to enforce policies and standards across an organization's infrastructure. It allows organizations to define rules for their infrastructure using a high-level language, and integrates with a variety of HashiCorp tools, including Terraform and Vault. Sentinel policies are defined using the Sentinel language, and can be used to enforce rules such as compliance requirements, security best practices, and cost optimization. Sentinel policies can be implemented at different stages of the infrastructure development lifecycle, deployment, and runtime.
 
-Description: The SageMaker Endpoint Configuration creates an endpoint configuration that SageMaker hosting services uses to deploy models. In the configuration, you identify one or more models to deploy and the resources that you want SageMaker to provision. More details on SageMake Endpoint Configuration can be found here - https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateEndpointConfig.html.
+## Intel's Sentinel Policy Structure
 
-In this policy, we will provide Intel recommendations for creating the SageMaker Endpoint Configuration for real time inference on the latest Intel Xeon Scalable Processors. Within each of the instance family types, the recommendation will be to use the latest Intel Xeon scalable processor available. We also include one prior generation of Intel Xeon within each instance family where latest is not available. More information on all CPU types supported for SageMaker Endpoint for all AWS regions can be found in this link - https://aws.amazon.com/sagemaker/pricing/
+Reference the `intel-policy-library` [README.md](https://github.com/intel/intel-policy-library/blob/main/README.md#getting-started) for details on how to get started using our policies.
 
-Resource type:  
-aws_sagemaker_endpoint_configuration
+Intel® provides a list of `optimal` instance types per cloud resource, selected to deliver the best possible performance, security, and cost-efficiency for your cloud workloads. What sets this library apart is its dynamic nature; it is designed to automatically update, informing developers whenever more suitable hardware becomes available within their cloud environment, enabling them to make timely and informed decisions.
 
-Parameter:
-instance_type
-
-Allowed Types :  Intel recommended instance types for SageMaker endpoint configurations
-#### Compute Optimized
-ml.c7i.large, ml.c7i.xlarge, ml.c7i.2xlarge, ml.c7i.4xlarge, ml.c7i.8xlarge, ml.c7i.12xlarge, ml.c7i.16xlarge, ml.c7i.24xlarge, ml.c7i.48xlarge, ml.c6i.large, ml.c6i.xlarge, ml.c6i.2xlarge, ml.c6i.4xlarge, ml.c6i.8xlarge, ml.c6i.12xlarge, ml.c6i.16xlarge, ml.c6i.24xlarge, ml.c6i.32xlarge
-
-#### General Purpose
-ml.m7i.large, ml.m7i.xlarge, ml.m7i.2xlarge, ml.m7i.4xlarge, ml.m7i.8xlarge, ml.m7i.12xlarge, ml.m7i.16xlarge, ml.m7i.24xlarge, ml.m7i.48xlarge, ml.m5.large, ml.m5.xlarge, ml.m5.2xlarge, ml.m5.4xlarge, ml.m5.12xlarge, ml.m5.24xlarge, ml.m5d.large, ml.m5d.xlarge, ml.m5d.2xlarge,ml.m5d.4xlarge, ml.m5d.12xlarge, ml.m5d.24xlarge
-
-#### Memory Optimized
-ml.r7i.large, ml.r7i.xlarge, ml.r7i.2xlarge, ml.r7i.4xlarge, ml.r7i.8xlarge, ml.r7i.12xlarge, ml.r7i.16xlarge, ml.r7i.24xlarge, ml.r7i.48xlarge, ml.r5.large, ml.r5.xlarge, ml.r5.2xlarge, ml.r5.4xlarge, ml.r5.12xlarge, ml.r5.24xlarge, ml.r5d.large, ml.r5d.xlarge, ml.r5d.2xlarge, ml.r5d.4xlarge, ml.r5d.12xlarge, ml.r5d.24xlarge
-
-#### Accelerated Computing
-ml.g4dn.xlarge, ml.g4dn.2xlarge, ml.g4dn.4xlarge, ml.g4dn.8xlarge, ml.g4dn.12xlarge, ml.g4dn.16xlarge, ml.inf1.xlarge, ml.inf1.2xlarge, ml.inf1.6xlarge, ml.inf1.24xlarge
+This library also contains `recommended` instance types for AI and Confidential Computing workloads. For more information regarding Intel's AI and Confidential Computing capabilities and policies see the Intel® Xeon® Scalable Processors and Intel® Advanced Matrix Extensions (AMX) and Intel® Xeon® Scalable Processors and Confidential Computing sections in the [intel-policy-library](https://github.com/intel/intel-policy-library)
