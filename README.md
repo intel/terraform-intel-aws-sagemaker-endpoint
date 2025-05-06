@@ -249,7 +249,7 @@ No modules.
 | <a name="input_initial_sampling_percentage"></a> [initial\_sampling\_percentage](#input\_initial\_sampling\_percentage) | Portion of data to capture. Should be between 0 and 100. | `number` | `100` | no |
 | <a name="input_initial_variant_weight"></a> [initial\_variant\_weight](#input\_initial\_variant\_weight) | Determines initial traffic distribution among all of the models that you specify in the endpoint configuration. If unspecified, it defaults to 1.0. | `string` | `null` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The type of instance to start. | `string` | `"ml.c7i.large"` | no |
-| <a name="input_intel_tags"></a> [intel\_tags](#input\_intel\_tags) | Intel Tags | `map(string)` | <pre>{<br>  "intel-module": "terraform-intel-aws-sagemaker-endpoint",<br>  "intel-registry": "https://registry.terraform.io/namespaces/intel"<br>}</pre> | no |
+| <a name="input_intel_tags"></a> [intel\_tags](#input\_intel\_tags) | Intel Tags | `map(string)` | <pre>{<br/>  "intel-module": "terraform-intel-aws-sagemaker-endpoint",<br/>  "intel-registry": "https://registry.terraform.io/namespaces/intel"<br/>}</pre> | no |
 | <a name="input_json_content_types"></a> [json\_content\_types](#input\_json\_content\_types) | The JSON content type headers to capture. | `any` | `null` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | Amazon Resource Name (ARN) of a AWS Key Management Service key that Amazon SageMaker uses to encrypt data on the storage volume attached to the ML compute instance that hosts the endpoint. | `string` | `null` | no |
 | <a name="input_model_name"></a> [model\_name](#input\_model\_name) | The name of the model to use. | `string` | `null` | no |
